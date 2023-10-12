@@ -1,0 +1,42 @@
+{
+  "name": "tutor",
+  "version": "1.0.0",
+  "description": "This is ITI Graduatuion Project",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon server.js",
+    "start:prod": "NODE_ENV=production nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.4.2",
+    "@uploadcare/rest-client": "^6.6.1",
+    "@uploadcare/signed-uploads": "^6.6.1",
+    "@uploadcare/upload-client": "^6.6.1",
+    "argon2": "^0.31.1",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.1",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.5.1",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.5",
+    "nodemon": "^3.0.1",
+    "prisma": "^5.4.2",
+    "sharp": "^0.32.6",
+    "util": "^0.12.5",
+    "uuid": "^9.0.1",
+    "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "morgan": "^1.10.0",
+    "supertest": "^6.3.3"
+  }
+}

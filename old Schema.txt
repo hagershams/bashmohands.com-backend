@@ -1,0 +1,77 @@
+
+model Payment {
+  id        String   @id @default(uuid())
+  amount    Float
+  createdAt DateTime @default(now())
+  confirmed Boolean
+  canceled  Boolean
+  Admin     Admin?   @relation(fields: [adminId], references: [id])
+  adminId   String?
+  Teacher   Teacher  @relation(fields: [teacherId], references: [id])
+  teacherId String
+  Student   Student  @relation(fields: [studentId], references: [id])
+  studentId String
+}
+
+model Review {
+  id        String  @id @default(uuid())
+  content   String
+  rate      Float
+  Teacher   Teacher @relation(fields: [teacherId], references: [id])
+  teacherId String
+  Student   Student @relation(fields: [studentId], references: [id])
+  studentId String
+}
+
+model Message {
+  id        String  @id @default(uuid())
+  content   String
+  Student   Student @relation(fields: [studentId], references: [id])
+  studentId String
+  Teacher   Teacher @relation(fields: [teacherId], references: [id])
+  teacherId String
+}
+
+model Certificate {
+  id        String   @id @default(uuid())
+  name      String
+  date      DateTime
+  verified  Boolean
+  image     String?
+  Teacher   Teacher  @relation(fields: [teacherId], references: [id])
+  teacherId String
+}
+
+model Slot {
+  id        String   @id @default(uuid())
+  date      DateTime
+  Student   Student  @relation(fields: [studentId], references: [id])
+  studentId String
+  Teacher   Teacher  @relation(fields: [teacherId], references: [id])
+  teacherId String
+}
+
+model Meeting {
+  id              String        @id @default(uuid())
+  date            DateTime
+  duration        Float
+  teacherAttended Boolean
+  studentAttended Boolean
+  reminder        Float
+  confirmed       Boolean
+  status          MettingStatus
+  Student         Student       @relation(fields: [studentId], references: [id])
+  studentId       String
+  Teacher         Teacher       @relation(fields: [teacherId], references: [id])
+  teacherId       String
+}
+
+enum MettingStatus {
+  COMPLETED
+  PENDING
+  CANCELED
+}
+
+// Questions
+// 1) Should I connect admin with users-grades... he creates
+// 2) Should I connect  
