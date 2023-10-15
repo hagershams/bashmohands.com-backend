@@ -23,6 +23,14 @@ export const signIn = catchAsync(async (req, res, next) => {
   const token = createToken(user);
   if (!token) return next(new AppError('Something Went Wrong!'), 500);
 
+  if (process.env.NODE_ENV == 'production') {
+    res.cookie('a_token', token, {
+      httpOnly: true, // Helps protect against cross-site scripting (XSS) attacks
+      secure: true, // Set to 'true' if using HTTPS
+      sameSite: 'Strict', // Protects against cross-site request forgery (CSRF) attacks
+      maxAge: 3600000, // Cookie expiration time in milliseconds (e.g., 1 hour)
+    });
+  }
   // sign user in
   // Send Welcome Email
   // ..........

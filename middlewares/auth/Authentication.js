@@ -16,19 +16,24 @@ export const createToken = user => {
 };
 
 export const authenticate = catchAsync(async (req, res, next) => {
-  let Token;
-
-  //Step 1 ==> Token provided or not
-  let authorization = req.headers['authorization'];
-  if (authorization && authorization.startsWith('Bearer')) {
-    let Authorization = authorization.split(' ')[1];
-    Token = Authorization;
-  } else return next(new AppError('Please Provide Your Token ..', 403));
+  /**
+   * Desc Get token from cookie if production
+   *      Get token from header if development
+   */
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
 
   //Step 2 ==> Verify Token
   let decoded;
   try {
-    decoded = jwt.verify(Token, process.env.TOKEN_SECRET);
+    decoded = jwt.verify(token, process.env.TOKEN_SECRET);
     if (!decoded) return next(new AppError('Not Valied Token ..', 403));
   } catch (error) {
     return next(new AppError('Invalid Token!', 403));
