@@ -27,7 +27,7 @@ const __dirname = dirname(__filename);
 
 app.use(
   cors({
-    origin: 'http://your-frontend-origin.com', // Replace with your frontend's actual origin
+    origin: '*', // Replace with your frontend's actual origin
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // If you need to allow cookies to be sent with the request
   })
