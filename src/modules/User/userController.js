@@ -9,6 +9,7 @@ import uploadFileToCloudMiddleware from '../../../middlewares/services/uploads/u
 import resizeImageMiddleware from '../../../middlewares/services/uploads/resizeImage.js';
 import prisma from '../../../Database/prisma/prismaClient.js';
 import argon from 'argon2';
+import { createToken } from '../../../middlewares/auth/Authentication.js';
 
 /**
  * @desc    Upload Photo Middleware
@@ -62,8 +63,23 @@ export const registerNewUser = catchAsync(async (req, res, next) => {
   });
 
   delete newUser.password;
-  // Send Response
-  Response(res, 'New User Created.', 201, newUser);
+  // create new token
+  const token = createToken(newUser);
+  if (!token) return next(new AppError('Something Went Wrong!'), 500);
+
+  if (process.env.NODE_ENV == 'production') {
+    res.cookie('a_token', token, {
+      httpOnly: true, // Helps protect against cross-site scripting (XSS) attacks
+      secure: true, // Set to 'true' if using HTTPS
+      sameSite: 'Strict', // Protects against cross-site request forgery (CSRF) attacks
+      maxAge: 3600000, // Cookie expiration time in milliseconds (e.g., 1 hour)
+    });
+  }
+  // sign user in
+  // Send Welcome Email
+  // ..........
+  // Send Response with created Token
+  Response(res, 'User Logged in successfully.', 200, { newUser, token });
 });
 
 /**
