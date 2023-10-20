@@ -12,7 +12,10 @@ import {
   setUserAvailability,
   updateUser,
 } from '../User/userController.js';
-import { authenticate } from '../../../middlewares/auth/Authentication.js';
+import {
+  isMine,
+  authenticate,
+} from '../../../middlewares/auth/Authentication.js';
 const router = express.Router();
 
 /**
@@ -28,6 +31,7 @@ router.post('/', registerNewUser);
  */
 router.patch(
   '/:userName/update-info',
+  isMine,
   uploadUserPhotos,
   resizeUserPhoto,
   uploadToCloud,
@@ -44,7 +48,12 @@ router.get('/:userName', getUser);
  * @route   GET /api/user/:userName/set-availabilty
  * @access   Public
  */
-router.get('/:userName/set-availability', authenticate, setUserAvailability);
+router.get(
+  '/:userName/set-availability',
+  authenticate,
+  isMine,
+  setUserAvailability
+);
 /**
  * @desc    Get User Availability
  * @route   GET /api/user/:userName/availabilty

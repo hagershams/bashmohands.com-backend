@@ -5,10 +5,10 @@ import prisma from '../../Database/prisma/prismaClient.js';
 
 //After Sign In .. Creating session token
 export const createToken = user => {
-  let { id, email, firstName, lastName } = user; //changable    //user means (admin - instractor - client)
+  let { id, email, firstName, lastName, handler } = user; //changable    //user means (admin - instractor - client)
   let iat = Date.now();
   let token = jwt.sign(
-    { id, email, firstName, lastName, iat },
+    { id, email, firstName, lastName, handler, iat },
     process.env.TOKEN_SECRET,
     { expiresIn: process.env.TOKEN_EXPIRES_IN }
   ); //any change in keys?    //the private key
@@ -64,4 +64,16 @@ export const authenticate = catchAsync(async (req, res, next) => {
   }
   req.user = user;
   next();
+});
+
+export const isMine = catchAsync(async (req, res, next) => {
+  if (req.user.role === 'ADMIN') return next();
+  else if (req.params.userName == req.user.handler) {
+    console.log(req.params.userName, req.user.handler);
+
+    return next();
+  } else
+    return next(
+      new AppError('You donot have access to perform this action', 403)
+    );
 });
