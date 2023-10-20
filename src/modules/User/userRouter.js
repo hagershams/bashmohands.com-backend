@@ -31,6 +31,7 @@ router.post('/', registerNewUser);
  */
 router.patch(
   '/:userName/update-info',
+  isMine,
   uploadUserPhotos,
   resizeUserPhoto,
   uploadToCloud,
