@@ -168,21 +168,27 @@ export const getUser = catchAsync(async (req, res, next) => {
 
   if (userTarget.isInstructor)
     return Response(res, 'Instructor Info.', 200, userTarget);
-
   // Client Info
   userTarget = {
     id: userTarget.id,
     firstName: userTarget.firstName,
     lastName: userTarget.lastName,
-    handler: userTarget.handler,
-    email: userTarget.email,
-    phone: userTarget.phone,
+    jobTitle: userTarget.jobTitle,
+    bio: userTarget.bio,
+    topics: userTarget.topics,
     photo: userTarget.photo,
     coverImage: userTarget.coverImage,
-    NID_Verified: userTarget.NID_Verified,
+    hourlyRate: userTarget.hourlyRate,
+    rating: userTarget.rating,
+    country: userTarget.country,
+
+    // handler: userTarget.handler,
+    // email: userTarget.email,
+    // phone: userTarget.phone,
+    // NID_Verified: userTarget.NID_Verified,
   };
 
-  Response(res, 'Instructor Info.', 200, userTarget);
+  Response(res, 'Client Info.', 200, userTarget);
 });
 
 /**

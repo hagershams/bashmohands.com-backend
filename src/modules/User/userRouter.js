@@ -39,10 +39,14 @@ router.patch(
 );
 /**
  * @desc    Get User Profile route
- * @route   POST /api/user/userName
+ * @route   POST /api/user/:userName
  * @access  Public
  */
-router.get('/:userName', getUser);
+router.get('/:userName',
+  authenticate,
+  isMine,
+  getUser
+);
 /**
  * @desc    Set User Availability
  * @route   GET /api/user/:userName/set-availabilty
