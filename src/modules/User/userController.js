@@ -150,12 +150,12 @@ export const getAllUsers = catchAsync(async (req, res, next) => {});
  */
 export const getUser = catchAsync(async (req, res, next) => {
   // Get User Name From parameters
-  const { userName } = req.params;
+  const { handler } = req.user;
 
   // Fetch User Info from database
   let userTarget = await prisma.user.findUnique({
     where: {
-      handler: userName,
+      handler: handler,
     },
   });
   if (!userTarget)
@@ -173,24 +173,68 @@ export const getUser = catchAsync(async (req, res, next) => {
     id: userTarget.id,
     firstName: userTarget.firstName,
     lastName: userTarget.lastName,
-    jobTitle: userTarget.jobTitle,
     bio: userTarget.bio,
-    topics: userTarget.topics,
     photo: userTarget.photo,
     coverImage: userTarget.coverImage,
-    hourlyRate: userTarget.hourlyRate,
-    rating: userTarget.rating,
     country: userTarget.country,
-
     // handler: userTarget.handler,
     // email: userTarget.email,
     // phone: userTarget.phone,
     // NID_Verified: userTarget.NID_Verified,
   };
-
   Response(res, 'Client Info.', 200, userTarget);
 });
+export const viewProfile = catchAsync(async (req, res, next) => {
+  // Get User Name From parameters
+  const { userName } = req.params;
+  // Fetch User Info from database
+  let userTarget = await prisma.user.findUnique({
+    where: {
+      handler: userName,
+    },
+  });
 
+  if (!userTarget) return next(new AppError('No user found with that userName!', 400));
+  if (userTarget.isInstructor){
+    userTarget = {
+      id: userTarget.id,
+      firstName: userTarget.firstName,
+      lastName: userTarget.lastName,
+      jobTitle: userTarget.jobTitle,
+      bio: userTarget.bio,
+      topics: userTarget.topics,
+      photo: userTarget.photo,
+      coverImage: userTarget.coverImage,
+      hourlyRate: userTarget.hourlyRate,
+      rating: userTarget.rating,
+      country: userTarget.country,
+      // handler: userTarget.handler,
+      // email: userTarget.email,
+      // phone: userTarget.phone,
+      // NID_Verified: userTarget.NID_Verified,
+    };
+    return Response(res, 'Instructor Info.', 200, userTarget);
+  }
+  else {
+    userTarget = {
+      id: userTarget.id,
+      firstName: userTarget.firstName,
+      lastName: userTarget.lastName,
+      // jobTitle: userTarget.jobTitle,
+      bio: userTarget.bio,
+      topics: userTarget.topics,
+      photo: userTarget.photo,
+      coverImage: userTarget.coverImage,
+      country: userTarget.country,
+      // handler: userTarget.handler,
+      // email: userTarget.email,
+      // phone: userTarget.phone,
+      // NID_Verified: userTarget.NID_Verified,
+    };
+
+    Response(res, 'Client Info.', 200, userTarget);    
+  }
+});
 /**
  * @desc    Delete An User
  * @route   DELETE /api/user/:id

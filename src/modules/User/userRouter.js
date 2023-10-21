@@ -8,6 +8,7 @@ import {
   resizeUserPhoto,
   uploadToCloud,
   getUser,
+  viewProfile,
   getUserAvailability,
   setUserAvailability,
   updateUser,
@@ -31,6 +32,7 @@ router.post('/', registerNewUser);
  */
 router.patch(
   '/:userName/update-info',
+  authenticate,
   isMine,
   uploadUserPhotos,
   resizeUserPhoto,
@@ -42,10 +44,21 @@ router.patch(
  * @route   POST /api/user/:userName
  * @access  Public
  */
-router.get('/:userName',
+
+
+
+
+
+router.get('/myProfile',
   authenticate,
-  isMine,
   getUser
+);
+
+
+
+
+router.get('/public/:userName',
+  viewProfile
 );
 /**
  * @desc    Set User Availability

@@ -72,8 +72,8 @@ export const isMine = catchAsync(async (req, res, next) => {
     console.log(req.params.userName, req.user.handler);
 
     return next();
-  } else
-    return next(
+  }
+  else return next(
       new AppError('You donot have access to perform this action', 403)
     );
 });
